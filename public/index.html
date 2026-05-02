@@ -1,12 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="./css/style.css">
+    <title>Catálogo de Filmes e Séries</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    
+
+    <div class="container py-5">
+        <h1 class="text-center mb-3">Catálogo de Filmes e Séries</h1>
+        <p class="text-center text-muted">
+            Abra o Console (F12) para ver os resultados
+        </p>
+
+        <div id="output" class="mt-4 p-4 border rounded"></div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
+<script>
+
+const catalogo = [
+    { id: 1, titulo: "Inception", tipo: "filme", ano: 2010, generos: ["ação", "ficção"], nota: 9.2, assistido: true },
+    { id: 2, titulo: "Breaking Bad", tipo: "serie", ano: 2008, generos: ["drama", "crime"], nota: 9.5, assistido: true },
+    { id: 3, titulo: "Interstellar", tipo: "filme", ano: 2014, generos: ["ficção"], nota: 8.8, assistido: false },
+    { id: 4, titulo: "Stranger Things", tipo: "serie", ano: 2016, generos: ["suspense", "ficção"], nota: 8.7, assistido: true },
+    { id: 5, titulo: "The Matrix", tipo: "filme", ano: 1999, generos: ["ação", "ficção"], nota: 9.0, assistido: false },
+    { id: 6, titulo: "The Office", tipo: "serie", ano: 2005, generos: ["comédia"], nota: 8.9, assistido: true }
+];
+
+console.log("Catálogo completo:", catalogo);
+
+
+console.log("Primeiro título:", catalogo[0].titulo);
+
+console.log("Ano do último item:", catalogo[catalogo.length - 1].ano);
+
+if (catalogo[2].generos.length > 1) {
+    console.log("Segundo gênero do terceiro item:", catalogo[2].generos[1]);
+} else {
+    console.log("O terceiro item não possui um segundo gênero.");
+}
+
+console.log("\nLista de títulos:");
+catalogo.forEach(item => {
+    console.log(`- [${item.tipo}] ${item.titulo} (${item.ano})`);
+});
+
+const titulosEmCaixaAlta = catalogo.map(item => item.titulo.toUpperCase());
+console.log("\nTítulos em caixa alta:", titulosEmCaixaAlta);
+
+const naoAssistidos = catalogo.filter(item => !item.assistido);
+console.log("\nQuantidade não assistidos:", naoAssistidos.length);
+
+const topItem = catalogo.find(item => item.nota >= 9);
+if (topItem) {
+    console.log("\nItem com nota >= 9:", topItem.titulo, "-", topItem.nota);
+} else {
+    console.log("\nNenhum item com nota >= 9 encontrado.");
+}
+
+const mediaGeral = catalogo.reduce((acc, item) => acc + item.nota, 0) / catalogo.length;
+
+const assistidos = catalogo.filter(item => item.assistido);
+const mediaAssistidos = assistidos.reduce((acc, item) => acc + item.nota, 0) / assistidos.length;
+
+console.log("\nMédia geral:", mediaGeral.toFixed(2));
+console.log("Média assistidos:", mediaAssistidos.toFixed(2));
+
+const temAntigo = catalogo.some(item => item.ano < 2000);
+const todosTemGenero = catalogo.every(item => item.generos.length > 0);
+
+console.log("\nExiste item antes de 2000?", temAntigo);
+console.log("Todos têm gênero?", todosTemGenero);
+
+const total = catalogo.length;
+const filmes = catalogo.filter(i => i.tipo === "filme").length;
+const series = catalogo.filter(i => i.tipo === "serie").length;
+
+const ranking = [...catalogo]
+    .sort((a, b) => b.nota - a.nota)
+    .slice(0, 3);
+
+const output = document.getElementById("output");
+
+output.innerHTML = `
+    <h3>Resumo do Catálogo</h3>
+    <p>Total de itens: ${total}</p>
+    <p>Filmes: ${filmes} | Séries: ${series}</p>
+    <p>Não assistidos: ${naoAssistidos.length}</p>
+    <p>Média geral: ${mediaGeral.toFixed(2)}</p>
+
+    <h4>Top 3 melhores</h4>
+    <ul>
+        ${ranking.map(item => `<li>${item.titulo} - ${item.nota}</li>`).join("")}
+    </ul>
+`;
+</script>
+
 </html>
